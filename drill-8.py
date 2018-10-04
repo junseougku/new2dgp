@@ -22,7 +22,7 @@ x =KPU_WIDTH//2
 y = KPU_HEIGHT//2
 px = KPU_WIDTH//2
 py = KPU_HEIGHT//2
-llist = []
+llist = [px,py]
 
 def draw_picture(r):
     for i in range(count):
@@ -85,8 +85,8 @@ def draw_curve_5_points(p1, p2,p3,p4,p5):#좌우때문에받음
         handle_events()
         delay(0.05)
         frame = (frame + 1) % 8
-    tx = px
-    ty = py
+    llist= [px, py]
+
     count += 1
 
     for i in range(50,100,2):
@@ -101,8 +101,7 @@ def draw_curve_5_points(p1, p2,p3,p4,p5):#좌우때문에받음
         handle_events()
         delay(0.05)
         frame = (frame + 1) % 8
-    tx = px
-    ty = py
+    llist = [px, py]
     count += 1
 
 size = 10
