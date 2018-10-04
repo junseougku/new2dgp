@@ -114,5 +114,6 @@ while running:
 
     draw_curve_5_points(points[n],points[n-1],points[n-2],points[n-3],points[n-4])
     n = (n + 1) % size
+    points[n] = [px,py]
     handle_events()
 
