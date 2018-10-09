@@ -9,7 +9,7 @@ class Ball:
             self.image = load_image('ball21x21.png')
         elif self.ball_size == 1:
             self.image = load_image('ball41x41.png')
-        self.speed = random.randint(4,10)
+        self.speed = random.randint(4,10) 
     def update(self):
         if self.ball_size == 0:
             if self.y > 60 :
