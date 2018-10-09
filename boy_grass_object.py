@@ -56,10 +56,18 @@ balls = [Ball() for i in range(20)]
 # game main loop code
 while running:
     handle_events()
-    boy.update()
+    for boy in team:
+        boy.update()
+    for ball in balls:
+        ball.update()
+
     clear_canvas()
+    for boy in team:
+        boy.draw()
     grass.draw()
-    boy.draw()
+    for ball in balls:
+        ball.draw()
+
     update_canvas()
     delay(0.05)
 # finalization
