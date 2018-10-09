@@ -1,19 +1,19 @@
 from pico2d import *
 import random
-class Boll:
+class Ball:
     def __init__(self):
         self.x , self.y = random.randint(50,750),599
-        self.boll_size = random.randint(0,1)
-        if self.boll_size == 0:
+        self.ball_size = random.randint(0,1)
+        if self.ball_size == 0:
             self.image = load_image('ball21x21.png')
-        elif self.boll_size == 1:
+        elif self.ball_size == 1:
             self.image = load_image('ball41x41.png')
         self.speed = random.randint(4,10)
     def update(self):
-        if self.boll_size == 0:
+        if self.ball_size == 0:
             if self.y > 60 :
                 self.y -= self.speed
-        elif self.boll_size == 1:
+        elif self.ball_size == 1:
             if self.y > 75 :
                 self.y -= self.speed
     def draw(self):
@@ -46,9 +46,11 @@ def handle_events():
 
 # initialization code
 open_canvas()
-boy = Boy()
 grass = Grass()
+team = [Boy() for i in range(11)]
 running = True
+
+balls = [Ball() for i in range(20)]
 
 
 # game main loop code
