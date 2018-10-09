@@ -1,5 +1,23 @@
 from pico2d import *
-
+import random
+class Boll:
+    def __init__(self):
+        self.x , self.y = random.randint(50,750),599
+        self.boll_size = random.randint(0,1)
+        if self.boll_size == 0:
+            self.image = load_image('ball21x21.png')
+        elif self.boll_size == 1:
+            self.image = load_image('ball41x41.png')
+        self.speed = random.randint(4,10)
+    def update(self):
+        if self.boll_size == 0:
+            if self.y > 60 :
+                self.y -= self.speed
+        elif self.boll_size == 1:
+            if self.y > 75 :
+                self.y -= self.speed
+    def draw(self):
+        self.image.draw(self.x,self.y)
 class Grass:
     def __init__(self):
         self.image = load_image('grass.png')
