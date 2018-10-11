@@ -4,6 +4,7 @@ from pico2d import *
 import main_state
 name = "PauseState"
 image = None
+coolTime = 0
 
 def enter():
     global image
@@ -21,6 +22,7 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
             game_framework.pop_state()
 
+
 def pause():
     pass
 
@@ -28,9 +30,13 @@ def resume():
     pass
 
 def draw():
+    global coolTime
     clear_canvas()
-    image.draw(400,300)
+    main_state.draw()
+    if (coolTime < 70):
+        image.draw(400, 300)
     update_canvas()
 
 def update():
-    pass
+    global coolTime
+    coolTime = (coolTime + 1) % 100
