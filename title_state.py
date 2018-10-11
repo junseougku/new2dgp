@@ -33,18 +33,11 @@ def draw():
     update_canvas()
 
 
-
-
-
-
-
 def update():
     pass
 
-
 def pause():
     pass
-
 
 def resume():
     pass
