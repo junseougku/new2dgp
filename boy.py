@@ -4,8 +4,7 @@ from ball import Ball
 import game_world
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP , SLEEP_TIMER, SPACE , LSHIFT,RSHIFT = range(8)
-
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP , SLEEP_TIMER, SPACE , LSHIFTD,RSHIFTD,LSHIFTU,RSHIFTU = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -13,8 +12,10 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE,
-    (SDL_KEYDOWN, SDLK_LSHIFT) : LSHIFT,
-    (SDL_KEYDOWN,SDLK_RSHIFT) : RSHIFT
+    (SDL_KEYDOWN, SDLK_LSHIFT) : LSHIFTD,
+    (SDL_KEYDOWN,SDLK_RSHIFT) : RSHIFTD,
+    (SDL_KEYUP, SDLK_LSHIFT) : LSHIFTU,
+    (SDL_KEYUP,SDLK_RSHIFT) : RSHIFTU
 }
 
 
@@ -111,29 +112,35 @@ class SleepState:
 class DashState:
     def enter(boy,event):
         boy.frame = 0
+        boy.timer = 300
     def exit(boy,event):
         pass
     def do(boy):
         boy.frame = (boy.frame + 1) % 8
+        boy.timer -= 1
+        boy.x += boy.velocity * 3
+        boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.timer -= 1
+        if boy.timer == 0:
+            boy.add_event(SLEEP_TIMER)
     def draw(boy):
         if boy.dir == 1:
             boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
         else:
             boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
 
-
-
-
-
-
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                SLEEP_TIMER: SleepState, SPACE : IdleState},
+                SLEEP_TIMER: SleepState, SPACE : IdleState , LSHIFTD : IdleState , RSHIFTD : IdleState,
+                LSHIFTU : IdleState , RSHIFTU : IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               SPACE : RunState},
+               SPACE : RunState, LSHIFTD : DashState , RSHIFTD : DashState , LSHIFTU : RunState , RSHIFTU : RunState},
     SleepState:{LEFT_DOWN : RunState, RIGHT_DOWN: RunState,
                 LEFT_UP: RunState,RIGHT_UP : RunState,
-                SPACE: IdleState}
+                SPACE: IdleState , LSHIFTD : IdleState , RSHIFTD : IdleState , LSHIFTU : IdleState , RSHIFTU : IdleState},
+    DashState:{RIGHT_UP : IdleState, LEFT_UP : IdleState , RIGHT_DOWN : IdleState, LEFT_DOWN : IdleState,
+                SPACE : IdleState , LSHIFTD : RunState , RSHIFTD : RunState , LSHIFTU : RunState , RSHIFTU : RunState,
+               SLEEP_TIMER : RunState}
 }
 
 class Boy:
@@ -166,7 +173,7 @@ class Boy:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
+            self.cur_state.enter(self, event) 
 
     def draw(self):
         self.cur_state.draw(self)
