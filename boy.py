@@ -18,7 +18,6 @@ key_event_table = {
     (SDL_KEYUP,SDLK_RSHIFT) : RSHIFTU
 }
 
-
 # Boy States
 
 class IdleState:
@@ -142,7 +141,6 @@ next_state_table = {
                 SPACE : IdleState , LSHIFTD : RunState , RSHIFTD : RunState , LSHIFTU : RunState , RSHIFTU : RunState,
                SLEEP_TIMER : RunState}
 }
-
 class Boy:
 
     def __init__(self):
@@ -155,7 +153,6 @@ class Boy:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-
 
     def fire_ball(self):
         # fill here
@@ -173,7 +170,7 @@ class Boy:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event) 
+            self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
