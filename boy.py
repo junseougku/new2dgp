@@ -38,6 +38,7 @@ class IdleState:
 
     @staticmethod
     def enter(boy, event):
+        boy.time_check = get_time()
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -48,6 +49,8 @@ class IdleState:
             boy.velocity += RUN_SPEED_PPS
         boy.timer = 1000
 
+
+
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
@@ -56,6 +59,8 @@ class IdleState:
 
     @staticmethod
     def do(boy):
+        if get_time() - boy.time_check >= 10.0:
+            print("10초인가")
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.timer -= 1
         if boy.timer == 0:
@@ -151,7 +156,7 @@ class Boy:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-
+        self.time_check = 0.0
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir*3)
