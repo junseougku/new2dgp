@@ -30,13 +30,14 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
-
+current_time = 0
 # Boy States
 
 class IdleState:
 
     @staticmethod
     def enter(boy, event):
+        global  current_time
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -45,8 +46,7 @@ class IdleState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-
-
+        current_time = get_time()
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
@@ -59,7 +59,7 @@ class IdleState:
         timer = get_time()
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
-        if timer >= 10:
+        if get_time() - current_time >= 10:
             boy.add_event(SLEEP_TIMER)
 
     @staticmethod
@@ -109,7 +109,7 @@ class SleepState:
     def enter(boy, event):
         boy.frame = 0
         global ghost
-        ghost = Ghost()
+        ghost = Ghost(boy.x,boy.y)
 
 
     @staticmethod
@@ -130,8 +130,8 @@ class SleepState:
             boy.image.clip_composite_draw(int(boy.frame) * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
         else:
             boy.image.clip_composite_draw(int(boy.frame) * 100, 200, 100, 100, -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
-        ghost.clone()
-        if not ghost.isClone:
+        ghost.create()
+        if not ghost.newghost:
             ghost.draw()
 
 
@@ -149,9 +149,8 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
-        # Boy is only once created, so instance image loading is fine
         self.image = load_image('animation_sheet.png')
-        self.font = load_font('ENCR10B.TTF', 32)
+        self.font = load_font('ENCR10B.TTF', 24)
         self.dir = 1
         self.velocity = 0
         self.frame = 0
