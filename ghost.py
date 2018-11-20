@@ -49,7 +49,7 @@ class Ghost:
     def draw(self):
         self.image.clip_draw(int(self.frame) * 100, 300, 100, 100, self.x + (RADIAN_P * math.cos(math.radians(self.angle))), self.y + (RADIAN_P * math.sin(math.radians(self.angle))))
         self.angle += ANGLE_PER_SECOND * game_framework.frame_time
-        self.image.opacify(random.random())  
+        self.image.opacify(random.random())
 
 
     def handle_event(self, event):
