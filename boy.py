@@ -83,11 +83,11 @@ class WalkingState:
         if boy.x_velocity > 0:
             boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
             boy.dir = 1
-            draw_rectangle(cx - 20, cy - 30, cx + 20, cy + 30)
+            draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
         elif boy.x_velocity < 0:
             boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = -1
-            draw_rectangle(cx - 20, cy - 30, cx + 20, cy + 30)
+            draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
         else:
             # if boy x_velocity == 0
             if boy.y_velocity > 0 or boy.y_velocity < 0:
@@ -95,15 +95,15 @@ class WalkingState:
                     boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
                 else:
                     boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
-                draw_rectangle(cx - 50, cy - 50, cx + 50, cy + 50)
+                    draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
             else:
                 # boy is idle
                 if boy.dir == 1:
                     boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, cx, cy)
                 else:
                     boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, cx, cy)
-                draw_rectangle(cx - 50, cy - 50, cx + 50, cy + 50)
-            draw_rectangle(cx-50,cy-50,cx+50,cy+50)
+                draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
+            draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
 
 
 next_state_table = {
