@@ -129,7 +129,8 @@ class Boy:
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
         self.eat = 0
-        self.cx,cy = 0,0
+        self.cx = 0
+        self.cy = 0
 
     def get_bb(self):
         return self.cx - 20, self.cy - 35, self.cx + 20, self.cy + 35
