@@ -76,7 +76,6 @@ class WalkingState:
         #boy.x = clamp(0,boy.x,boy.bg.w)
         #boy.y = clamp(0,boy.y,boy.bg.h)
 
-
     @staticmethod
     def draw(boy):
         cx,cy = boy.canvas_width//2,boy.canvas_height//2
@@ -104,6 +103,8 @@ class WalkingState:
                     boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, cx, cy)
                 draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
             draw_rectangle(cx - 20, cy - 35, cx + 20, cy + 35)
+            boy.cx = cx
+            boy.cy = cy
 
 
 next_state_table = {
@@ -127,9 +128,11 @@ class Boy:
         self.event_que = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
+        self.eat = 0
+        self.cx,cy = 0,0
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.cx - 20, self.cy - 35, self.cx + 20, self.cy + 35
 
 
     def set_background(self, bg):
@@ -150,7 +153,8 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
+        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.eat), (255, 255, 0))
+
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]

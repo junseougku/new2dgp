@@ -9,8 +9,9 @@ class Ball:
     def __init__(self):
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
-        self.x, self.y, self.fall_speed = random.randint(0, 1600-1), random.randint (100,1500-1), 0
-        self.velocity = 0
+        self.x, self.y, self.fall_speed = random.randint(0, 1600-1), random.randint (100,900-1), 0
+        self.x_velocity = 0
+        self.y_velocity = 0
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
