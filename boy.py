@@ -131,10 +131,12 @@ class Boy:
         self.eat = 0
         self.cx = 0
         self.cy = 0
-
+        self.pickup = load_wav('pickup.wav')
+        self.pickup.set_volume(32)
     def get_bb(self):
         return self.cx - 20, self.cy - 35, self.cx + 20, self.cy + 35
-
+    def play_pickup(self):
+        self.pickup.play()
 
     def set_background(self, bg):
         self.bg = bg
@@ -154,7 +156,7 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.eat), (255, 255, 0))
+        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '%5d' %  self.eat, (255, 255, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
