@@ -49,6 +49,9 @@ class InfiniteBackground:
 
     def draw(self):
         self.image.clip_draw_to_origin(self.q3l, self.q3b, self.q3w, self.q3h, 0, 0)                        # quadrant 3
+        self.image.clip_draw_to_origin(self.q2l, self.q2b, self.q2w, self.q2h, 0, self.q3h)
+        self.image.clip_draw_to_origin(self.q4l, self.q4b, self.q4w, self.q4h, self.q3w, 0)
+        self.image.clip_draw_to_origin(self.q1l, self.q1b, self.q1w, self.q1h, self.q3w, self.q3h)
         # fill here
 
     def update(self):
@@ -64,15 +67,15 @@ class InfiniteBackground:
 
         # quadrand 4
         self.q4l = 0
-        self.q4b = 0
-        self.q4w = 0
-        self.q4h = 0
+        self.q4b = self.q3b
+        self.q4w = self.canvas_width - self.q3w
+        self.q4h = self.q3h
 
         # quadrand 1
         self.q1l = 0
         self.q1b = 0
-        self.q1w = 0
-        self.q1h = 0
+        self.q1w = self.q4w
+        self.q1h = self.q2h
 
 
     def handle_event(self, event):

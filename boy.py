@@ -73,22 +73,21 @@ class WalkingState:
 
         #boy.x = clamp(boy.canvas_width//2,boy.x,boy.bg.w - boy.canvas_width//2)
         #boy.y = clamp (boy.canvas_height//2,boy.y,boy.bg.h - boy.canvas_height//2)
-        boy.x = clamp(0,boy.x,boy.bg.w)
-        boy.y = clamp(0,boy.y,boy.bg.h)
+        #boy.x = clamp(0,boy.x,boy.bg.w)
+        #boy.y = clamp(0,boy.y,boy.bg.h)
 
 
     @staticmethod
     def draw(boy):
-        #cx,cy = boy.canvas_width//2,boy.canvas_height//2
-        cx,cy = boy.x - boy.bg.window_left,boy.y-boy.bg.window_bottom
-        #cx,cy = boy.x - clamp(100,boy.x,1200) ,boy.y-clamp(300,boy.y,1200)
-        #cx,cy = boy.canvas_width//2,boy.canvas_height//2
+        cx,cy = boy.canvas_width//2,boy.canvas_height//2
         if boy.x_velocity > 0:
             boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
             boy.dir = 1
+            draw_rectangle(cx - 20, cy - 30, cx + 20, cy + 30)
         elif boy.x_velocity < 0:
             boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = -1
+            draw_rectangle(cx - 20, cy - 30, cx + 20, cy + 30)
         else:
             # if boy x_velocity == 0
             if boy.y_velocity > 0 or boy.y_velocity < 0:
@@ -96,12 +95,15 @@ class WalkingState:
                     boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
                 else:
                     boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
+                draw_rectangle(cx - 50, cy - 50, cx + 50, cy + 50)
             else:
                 # boy is idle
                 if boy.dir == 1:
                     boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, cx, cy)
                 else:
                     boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, cx, cy)
+                draw_rectangle(cx - 50, cy - 50, cx + 50, cy + 50)
+            draw_rectangle(cx-50,cy-50,cx+50,cy+50)
 
 
 next_state_table = {
@@ -149,7 +151,6 @@ class Boy:
     def draw(self):
         self.cur_state.draw(self)
         self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
-        #clamp(0, boy.x, boy.bg.w)
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]

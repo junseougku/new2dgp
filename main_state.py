@@ -5,10 +5,10 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-
+import ball
 from boy import Boy
-from background import FixedBackground as Background
-#from background import InfiniteBackground as Background
+#from background import FixedBackground as Background
+from background import InfiniteBackground as Background
 
 name = "MainState"
 
@@ -27,6 +27,10 @@ def enter():
 
     background.set_center_object(boy)
     boy.set_background(background)
+
+    global balls
+    balls = [ball.Ball() for i in range(100)]
+    game_world.add_objects(balls, 1)
 
 
 
