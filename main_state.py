@@ -1,24 +1,19 @@
 import random
 import json
+import pickle
 import os
 
 from pico2d import *
 import game_framework
 import game_world
-import ball
-from boy import Boy
-from background import FixedBackground as Background
-#from background import InfiniteBackground as Background
+
+import world_build_state
 
 name = "MainState"
 
-boy = None
-background = None
-balls = None
 
 def collide(a, b):
     # fill here
-    global boy
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -26,26 +21,16 @@ def collide(a, b):
     if right_a < left_b: return False
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
-    boy.play_pickup()
+
     return True
 
+boy = None
+
 def enter():
+    # game world is prepared already in world_build_state
     global boy
-    boy = Boy()
-    game_world.add_object(boy, 1)
-
-    global background
-    background = Background()
-    game_world.add_object(background, 0)
-
-    background.set_center_object(boy)
-    boy.set_background(background)
-
-    global balls
-    balls = [ball.Ball() for i in range(100)]
-    game_world.add_objects(balls, 1)
-
-
+    boy = world_build_state.get_boy()
+    pass
 
 def exit():
     game_world.clear()
@@ -64,7 +49,9 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.quit()
+            game_framework.change_state(world_build_state)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
+            game_world.save()
         else:
             boy.handle_event(event)
 
@@ -72,12 +59,6 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    for ball in balls:
-        if collide(boy, ball):
-            balls.remove(ball)
-            boy.eat += 1
-            # fill here
-            game_world.remove_object(ball)
 
 
 def draw():

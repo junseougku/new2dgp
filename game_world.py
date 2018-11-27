@@ -1,3 +1,4 @@
+import pickle
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
@@ -21,8 +22,8 @@ def remove_object(o):
 
 
 def clear():
-    for o in all_objects():
-        del o
+    for l in objects:
+        l.clear()
 
 
 def all_objects():
@@ -30,3 +31,12 @@ def all_objects():
         for o in objects[i]:
             yield o
 
+
+def save():
+    with open('game.sav','wb') as f:
+        pickle.dump(objects,f)
+
+def load():
+    global objects
+    with open('game.sav','rb') as f:
+        objects = pickle.load(f)
